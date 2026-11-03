@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IoT Smart Cities Mid-2 — Complete Master Q&A Guide</title>
+<style>
+  :root {
+    --bg: #0a0d12; --surface: #141821; --surface-raised: #1c2128; --surface-strong: #252b35;
+    --border: #2a3038; --border-light: #3a414c;
+    --text-primary: #e6edf3; --text-secondary: #adbac7; --text-tertiary: #768390;
+    --nv-green: #76b900; --nv-green-soft: rgba(118,185,0,0.12);
+    --cyan: #00d4ff; --cyan-soft: rgba(0,212,255,0.1);
+    --purple: #b794f4; --purple-soft: rgba(183,148,244,0.1);
+    --orange: #ff9b50; --orange-soft: rgba(255,155,80,0.1);
+    --red: #ff6b6b; --red-soft: rgba(255,107,107,0.1);
+    --yellow: #ffc857; --yellow-soft: rgba(255,200,87,0.1);
+    --font-sans: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    --font-mono: "JetBrains Mono","SF Mono","Fira Code",Consolas,monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--font-sans); background: var(--bg); color: var(--text-primary); line-height: 1.7; font-size: 15px; }
+  .wrap { display: flex; min-height: 100vh; }
+  .sidebar { width: 290px; background: var(--surface); border-right: 1px solid var(--border); padding: 24px 18px; position: fixed; top:0; left:0; bottom:0; overflow-y:auto; z-index:100; }
+  .logo { font-size: 17px; font-weight: 800; letter-spacing: -0.3px; margin-bottom: 4px; color: var(--cyan); }
+  .logo-sub { font-size: 11px; color: var(--text-tertiary); margin-bottom: 20px; }
+  .progress-wrap { margin-bottom: 18px; }
+  .progress-bg { height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+  .progress-fill { height:100%; background: linear-gradient(90deg, var(--cyan), var(--nv-green)); width:0%; transition: width 0.4s ease; }
+  .progress-txt { font-size:11px; color:var(--text-tertiary); margin-top:6px; text-align:right; }
+  .search-box { width:100%; padding:9px 13px; border-radius:8px; border:1px solid var(--border); background:var(--surface-raised); color:var(--text-primary); font-family:inherit; font-size:13px; margin-bottom:14px; outline:none; }
+  .search-box:focus { border-color: var(--cyan); }
+  .search-results { position:absolute; top:125px; left:18px; right:18px; background:var(--surface-raised); border:1px solid var(--border); border-radius:10px; max-height:300px; overflow-y:auto; box-shadow:0 8px 24px rgba(0,0,0,0.5); display:none; z-index:200; }
+  .search-result { padding:10px 14px; cursor:pointer; border-bottom:1px solid var(--border); font-size:13px; }
+  .search-result:hover { background:var(--surface-strong); }
+  .sr-title { font-weight:600; color:var(--text-primary); }
+  .sr-snippet { color:var(--text-tertiary); font-size:12px; margin-top:2px; }
+  .unit-btn { width:100%; text-align:left; padding:10px 14px; border-radius:8px; border:none; background:transparent; cursor:pointer; font-size:13px; font-weight:600; color:var(--text-secondary); transition:all 0.15s; font-family:inherit; display:flex; justify-content:space-between; align-items:center; margin-bottom:4px; }
+  .unit-btn:hover { background:var(--surface-raised); color:var(--text-primary); }
+  .unit-btn.active { background:var(--surface-strong); color:var(--cyan); }
+  .unit-btn .ch { font-size:10px; color:var(--text-tertiary); transition:transform 0.2s; }
+  .unit-btn.active .ch { transform: rotate(90deg); color:var(--cyan); }
+  .sec-list { margin-left:8px; margin-bottom:12px; display:none; }
+  .sec-list.open { display:block; }
+  .sec-link { display:block; padding:6px 12px 6px 22px; font-size:11.5px; color:var(--text-tertiary); text-decoration:none; border-radius:6px; transition:all 0.15s; cursor:pointer; border-left:2px solid transparent; line-height:1.4; }
+  .sec-link:hover, .sec-link.active { color:var(--text-primary); background:var(--surface-raised); border-left-color:var(--cyan); }
+  .main { margin-left:290px; flex:1; padding:32px 48px; max-width:980px; }
+  .mobile-toggle { display:none; position:fixed; top:14px; left:14px; z-index:300; background:var(--surface-strong); border:1px solid var(--border); color:var(--text-primary); padding:8px 12px; border-radius:8px; cursor:pointer; font-size:14px; }
+  .overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:90; }
+  .overlay.open { display:block; }
+  .q-block { margin-bottom:48px; }
+  .q-header { background:linear-gradient(135deg, var(--surface) 0%, var(--surface-raised) 100%); border:1px solid var(--border); border-left:4px solid var(--cyan); border-radius:12px; padding:20px 24px; margin-bottom:24px; }
+  .q-num { font-size:12px; font-weight:700; color:var(--cyan); text-transform:uppercase; letter-spacing:0.8px; margin-bottom:6px; }
+  .q-title { font-size:19px; font-weight:700; line-height:1.35; color:var(--text-primary); }
+  .q-marks { display:inline-block; margin-top:10px; padding:3px 10px; border-radius:6px; background:var(--cyan-soft); color:var(--cyan); font-size:11px; font-weight:700; }
+  h2 { font-size:18px; font-weight:700; margin-top:32px; margin-bottom:14px; color:var(--text-primary); padding-bottom:8px; border-bottom:1px solid var(--border); }
+  h3 { font-size:16px; font-weight:700; margin-top:24px; margin-bottom:10px; color:var(--nv-green); }
+  h4 { font-size:14px; font-weight:700; margin-top:18px; margin-bottom:8px; color:var(--text-secondary); }
+  p { margin-bottom:12px; color:var(--text-secondary); }
+  ul, ol { margin-bottom:16px; padding-left:24px; color:var(--text-secondary); }
+  li { margin-bottom:6px; }
+  li strong { color:var(--text-primary); }
+  code { font-family:var(--font-mono); font-size:13px; background:var(--surface-strong); padding:2px 6px; border-radius:4px; color:var(--cyan); }
+  .mark-tag { display:inline-block; padding:2px 8px; border-radius:5px; background:var(--nv-green-soft); color:var(--nv-green); font-size:11px; font-weight:700; margin-bottom:10px; }
+  .note { border-left:3px solid var(--cyan); padding:12px 16px; margin:14px 0; color:var(--text-secondary); font-size:13px; background:var(--cyan-soft); border-radius:0 8px 8px 0; }
+  .note strong { color:var(--cyan); }
+  .code-block { background:#0d1117; border:1px solid var(--border); border-radius:10px; padding:16px; overflow-x:auto; margin:14px 0; position:relative; }
+  .code-block pre { font-family:var(--font-mono); font-size:12.5px; line-height:1.6; color:#c9d1d9; margin:0; white-space:pre; }
+  .code-label { position:absolute; top:8px; right:12px; font-size:10px; color:var(--text-tertiary); font-family:var(--font-mono); background:var(--surface); padding:2px 8px; border-radius:4px; }
+  table { width:100%; border-collapse:collapse; margin:14px 0; font-size:12.5px; background:var(--surface); border-radius:8px; overflow:hidden; }
+  th, td { padding:10px 12px; text-align:left; border-bottom:1px solid var(--border); vertical-align:top; }
+  th { font-weight:700; color:var(--text-primary); background:var(--surface-raised); font-size:11px; text-transform:uppercase; letter-spacing:0.5px; }
+  td { color:var(--text-secondary); }
+  td strong { color:var(--cyan); }
+  tr:hover td { background:var(--surface-raised); }
+  .diagram-box { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:24px; margin:20px 0; overflow-x:auto; }
+  .diagram-title { text-align:center; font-size:12px; font-weight:700; color:var(--cyan); text-transform:uppercase; letter-spacing:1px; margin-bottom:16px; }
+  .arch-stack { display:flex; flex-direction:column; align-items:center; gap:6px; }
+  .arch-layer { padding:14px 20px; border:1px solid var(--border); border-radius:8px; background:var(--surface-raised); text-align:center; min-width:420px; }
+  .arch-layer .al-name { font-weight:700; font-size:13px; color:var(--text-primary); margin-bottom:4px; }
+  .arch-layer .al-desc { font-size:11px; color:var(--text-tertiary); }
+  .arch-layer.control { border-color:var(--cyan); background:var(--cyan-soft); }
+  .arch-layer.control .al-name { color:var(--cyan); }
+  .arch-layer.worker { border-color:var(--nv-green); background:var(--nv-green-soft); }
+  .arch-layer.worker .al-name { color:var(--nv-green); }
+  .arch-layer.devops { border-color:var(--purple); background:var(--purple-soft); }
+  .arch-layer.devops .al-name { color:var(--purple); }
+  .arch-layer.warn { border-color:var(--red); background:var(--red-soft); }
+  .arch-layer.warn .al-name { color:var(--red); }
+  .arch-arrow { color:var(--text-tertiary); font-size:14px; }
+  .arch-arrow span { font-size:10px; display:block; }
+  .arch-sub-blocks { display:flex; gap:8px; margin-top:8px; }
+  .arch-sub { flex:1; padding:8px; border:1px solid var(--border); border-radius:6px; background:var(--surface); font-size:10px; text-align:center; }
+  .arch-sub strong { display:block; color:var(--text-primary); margin-bottom:2px; }
+  .pipeline-flow { display:flex; flex-direction:column; align-items:center; gap:8px; }
+  .pipe-stage { padding:12px 20px; border:1px solid var(--cyan); background:var(--cyan-soft); border-radius:8px; font-size:12px; color:var(--text-primary); text-align:center; min-width:380px; }
+  .pipe-stage strong { color:var(--cyan); }
+  .pipe-stage.green { border-color:var(--nv-green); background:var(--nv-green-soft); }
+  .pipe-stage.green strong { color:var(--nv-green); }
+  .pipe-stage.purple { border-color:var(--purple); background:var(--purple-soft); }
+  .pipe-stage.purple strong { color:var(--purple); }
+  .pipe-stage.warn { border-color:var(--red); background:var(--red-soft); }
+  .pipe-stage.warn strong { color:var(--red); }
+  .pipe-arrow { color:var(--cyan); font-size:14px; }
+  .compare-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:14px 0; }
+  .compare-card { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:16px; }
+  .compare-card h4 { margin-top:0; padding-bottom:8px; border-bottom:1px solid var(--border); text-align:center; color:var(--cyan); }
+  .compare-grid-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; margin:14px 0; }
+  .top-nav { display:flex; justify-content:space-between; align-items:center; margin-top:32px; padding-top:16px; border-top:1px solid var(--border); }
+  .nav-btn { padding:8px 16px; border-radius:8px; border:1px solid var(--border); background:var(--surface-raised); cursor:pointer; font-family:inherit; font-size:13px; color:var(--text-primary); transition:all 0.15s; }
+  .nav-btn:hover { background:var(--surface-strong); border-color:var(--cyan); }
+  .nav-btn:disabled { opacity:0.3; cursor:not-allowed; }
+  .flashcard { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:24px; margin:14px 0; cursor:pointer; transition:all 0.2s; min-height:120px; display:flex; flex-direction:column; justify-content:center; }
+  .flashcard:hover { border-color:var(--cyan); transform:translateY(-1px); }
+  .fc-q { font-size:16px; font-weight:700; text-align:center; color:var(--text-primary); }
+  .fc-a { font-size:13px; color:var(--text-secondary); text-align:center; margin-top:12px; display:none; line-height:1.6; }
+  .flashcard.flipped .fc-q { display:none; }
+  .flashcard.flipped .fc-a { display:block; }
+  .fc-hint { font-size:11px; color:var(--text-tertiary); text-align:center; margin-top:8px; }
+  .flashcard.flipped .fc-hint { display:none; }
+  .qa-card { background:var(--surface); border:1px solid var(--border); border-left:3px solid var(--nv-green); border-radius:10px; padding:16px 20px; margin:12px 0; }
+  .qa-card .qa-q { font-size:14px; font-weight:700; color:var(--nv-green); margin-bottom:8px; }
+  .qa-card .qa-a { font-size:13px; color:var(--text-secondary); line-height:1.6; }
+  .qa-card .qa-a strong { color:var(--text-primary); }
+  .qa-card .qa-a ul, .qa-card .qa-a ol { margin:6px 0 6px 18px; font-size:13px; }
+  .section { display:none; }
+  .section.active { display:block; animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+  .unit-heading { font-size:26px; font-weight:800; margin-bottom:8px; color:var(--text-primary); letter-spacing:-0.5px; }
+  .unit-sub { font-size:14px; color:var(--text-tertiary); margin-bottom:32px; }
+  @media (max-width:900px) {
+    .sidebar { transform:translateX(-100%); transition:transform 0.3s; }
+    .sidebar.open { transform:translateX(0); }
+    .main { margin-left:0; padding:20px; max-width:100%; }
+    .mobile-toggle { display:block; }
+    .compare-grid, .compare-grid-3 { grid-template-columns:1fr; }
+    .arch-layer { min-width:auto; width:100%; }
+    .pipe-stage { min-width:auto; width:100%; }
+  }
+</style>
+</head>
+<body>
+<button class="mobile-toggle" onclick="toggleSidebar()">☰ Menu</button>
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+<div class="wrap">
+<aside class="sidebar" id="sidebar">
+  <div class="logo">▚ IoT SMART CITIES</div>
+  <div class="logo-sub">Mid-2 Master Q&A Guide</div>
+  <div class="progress-wrap">
+    <div class="progress-bg"><div class="progress-fill" id="progressBar"></div></div>
+    <div class="progress-txt" id="progressText">0% complete</div>
+  </div>
+  <input type="text" class="search-box" id="searchBox" placeholder="Search topics..." autocomplete="off">
+  <div id="searchResults" class="search-results"></div>
+  <nav id="sidebarNav"></nav>
+</aside>
+<main class="main" id="mainContent">
+<div id="contentArea"></div>
+</main>
+</div>
+<script>
+const courseData = {
+  units: [
+    {
+      id: "u3", title: "Unit III: Medical IoT & Cybersecurity",
+      sections: [
+        {
+          id: "u3pa", title: "Part-A: Q1 — Medical IoT Threats",
+          content: `
+<div class="unit-heading">Part-A: 2-Mark Questions</div>
+<div class="unit-sub">IoT for Smart Cities — Mid-2 Examination</div>
+
+<div class="q-block">
+<div class="q-header">
+  <div class="q-num">Question 1 · 2 Marks · CO-3 · BL-1</div>
+  <div class="q-title">List the various cyber threats/attacks on IoT-based medical devices.</div>
+  <div class="q-marks">2M</div>
+</div>
+
+<p>Cyber threats targeting IoT-based medical devices exploit vulnerabilities across attack vectors to compromise device integrity, user privacy, or patient safety:</p>
+
+<ol>
+  <li><strong>Malware Attacks:</strong> Infiltration via malicious software such as Viruses, Rootkits, Trojans, and Worms to hijack device operations.</li>
+  <li><strong>Exploitation of Software/Firmware Vulnerabilities:</strong> Exploiting weak, unauthenticated, or unpatched firmware updates to gain root access or manipulate pacing/dosage algorithms.</li>
+  <li><strong>Wireless Connectivity &amp; Interception Attacks:</strong> Man-in-the-Middle (MitM), Eavesdropping, and Replay attacks via radio frequency links.</li>
+  <li><strong>Denial of Service (DoS) &amp; Resource Depletion:</strong> Flooding radio channels or executing battery-depletion attacks to render life-critical devices unavailable.</li>
+  <li><strong>Privilege Escalation &amp; Data Manipulation:</strong> Bypassing authentication to modify alarm thresholds or send spoofed medical data.</li>
+</ol>
+
+<div class="diagram-box">
+  <div class="diagram-title">Classification of Threats on Medical IoT</div>
+  <div class="arch-stack">
+    <div class="arch-layer warn">
+      <div class="al-name">CYBER THREATS ON MEDICAL IoT DEVICES</div>
+    </div>
+    <div class="arch-arrow">↓</div>
+    <div style="display:flex; gap:16px; flex-wrap:wrap; justify-content:center;">
+      <div class="arch-layer" style="min-width:200px;">
+        <div class="al-name">Attack Vectors</div>
+        <div class="arch-sub-blocks">
+          <div class="arch-sub"><strong>Malware</strong>Trojans / Worms</div>
+          <div class="arch-sub"><strong>Firmware Flaws</strong>Unverified patches</div>
+          <div class="arch-sub"><strong>Wireless MitM</strong>Eavesdropping</div>
+        </div>
+      </div>
+      <div class="arch-layer control" style="min-width:200px;">
+        <div class="al-name">Impacted Outcomes</div>
+        <div class="arch-sub-blocks">
+          <div class="arch-sub"><strong>Data Privacy</strong>Leakage</div>
+          <div class="arch-sub"><strong>Malfunction</strong>Pacing / Dosage</div>
+          <div class="arch-sub"><strong>DoS</strong>Resource Depletion</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+          `
+        },
+        {
+          id: "u3pa2", title: "Part-A: Q2 — Smart Parking",
+          content: `
+<div class="q-block">
+<div class="q-header">
+  <div class="q-num">Question 2 · 2 Marks · CO-4 · BL-2</div>
+  <div class="q-title">How IoT can help in a smart parking mechanism.</div>
+  <div class="q-marks">2M</div>
+</div>
+
+<p>An IoT-enabled Smart Parking System (SPS) collects and processes real-time occupancy data using layered architectures to streamline parking management:</p>
+
+<ol>
+  <li><strong>Real-Time Detection:</strong> Sensing devices (ultrasonic, infrared, magnetic, RFID, CCTV) continuously detect the presence or absence of vehicles in parking slots.</li>
+  <li><strong>Data Communication &amp; Cloud Integration:</strong> Sensors transmit occupancy updates via wireless networks (ZigBee, LoRaWAN, Wi-Fi) to cloud servers/middleware.</li>
+  <li><strong>Dynamic Reservation &amp; Guidance:</strong> Drivers receive live updates on available parking spots and pricing via mobile applications, reducing search time and urban traffic congestion.</li>
+  <li><strong>Automated Payments &amp; Security:</strong> Facilitates cashless payments, smart ticketing, and automated access control integrated with surveillance.</li>
+</ol>
+
+<div class="diagram-box">
+  <div class="diagram-title">Smart Parking System (SPS) Architecture</div>
+  <div class="arch-stack">
+    <div class="arch-layer control">
+      <div class="al-name">APPLICATION LAYER</div>
+      <div class="al-desc">Client Apps / Displays / Micro-Cloud</div>
+    </div>
+    <div class="arch-arrow">▲ <span>HTTP / JSON / Internet</span></div>
+    <div class="arch-layer devops">
+      <div class="al-name">MIDDLEWARE &amp; NETWORKING</div>
+      <div class="al-desc">Web Server / Database / ZigBee / LoRa</div>
+    </div>
+    <div class="arch-arrow">▲ <span>Sensor Signals</span></div>
+    <div class="arch-layer worker">
+      <div class="al-name">SENSING LAYER</div>
+      <div class="al-desc">Ultrasonic / IR / CCTV / RFID Sensors</div>
+      <div class="arch-sub-blocks">
+        <div class="arch-sub"><strong>Free Spot</strong>Available</div>
+        <div class="arch-sub"><strong>Occupied Spot</strong>Vehicle detected</div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+          `
+        },
+        {
+          id: "u3pa3", title: "Part-A: Q3 — GPS & GIS",
+          content: `
+<div class="q-block">
+<div class="q-header">
+  <div class="q-num">Question 3 · 2 Marks · CO-4 · BL-1</div>
+  <div class="q-title">What is the purpose of GPS and GIS?</div>
+  <div class="q-marks">2M</div>
+</div>
+
+<p>GPS and GIS are complementary geospatial technologies used together for positioning, mapping, and decision-making:</p>
+
+<ul>
+  <li><strong>GPS (Global Positioning System):</strong> A <strong>satellite-based navigation system</strong> whose primary purpose is to provide precise real-time location (latitude, longitude, altitude) and exact time information anywhere on Earth using space satellite signals.</li>
+  <li><strong>GIS (Geographic Information System):</strong> A <strong>computer-based data management system</strong> designed to capture, store, analyze, and visually display spatial/geographic data to generate maps and support urban planning or spatial decisions.</li>
+</ul>
+
+<div class="diagram-box">
+  <div class="diagram-title">Functional Integration of GPS and GIS</div>
+  <div class="arch-stack">
+    <div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap; justify-content:center;">
+      <div class="arch-layer worker" style="min-width:160px;">
+        <div class="al-name">GPS Satellites</div>
+      </div>
+      <div class="arch-arrow" style="font-size:18px;">→<span>Location Signals</span></div>
+      <div class="arch-layer control" style="min-width:160px;">
+        <div class="al-name">GPS Receiver</div>
+      </div>
+    </div>
+    <div class="arch-arrow">↓ <span>Real-Time Coordinates</span></div>
+    <div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap; justify-content:center;">
+      <div class="arch-layer devops" style="min-width:160px;">
+        <div class="al-name">Spatial Datasets</div>
+        <div class="al-desc">Satellite Images / Maps</div>
+      </div>
+      <div class="arch-arrow" style="font-size:18px;">→</div>
+      <div class="arch-layer" style="min-width:160px; border-color:var(--nv-green); background:var(--nv-green-soft);">
+        <div class="al-name" style="color:var(--nv-green);">GIS Software</div>
+        <div class="al-desc">ArcGIS / QGIS</div>
+      </div>
+      <div class="arch-arrow" style="font-size:18px;">→</div>
+      <div class="arch-layer warn" style="min-width:180px;">
+        <div class="al-name">Maps &amp; Urban Planning</div>
+        <div class="al-desc">Decision Analytics</div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+          `
+        },
+        {
+          id: "u3pa4", title: "Part-A: Q4 — Flood Management",
+          content: `
+<div class="q-block">
+<div class="q-header">
+  <div class="q-num">Question 4 · 2 Marks · CO-5 · BL-2</div>
+  <div class="q-title">List the technologies involved in flood management systems.</div>
+  <div class="q-marks">2M</div>
+</div>
+
+<p>IoT-based flood management systems integrate key sensing, connectivity, and analytics technologies to provide early warnings and spatial analysis:</p>
+
+<ol>
+  <li><strong>Wireless Sensor Networks (WSN):</strong> Water level sensors, flow meters, rainfall intensity sensors, and stream speed monitors deployed along rivers and reservoirs.</li>
+  <li><strong>Long-Range Wireless Communication (LoRa / LoRaWAN):</strong> Low-power, long-range connectivity deployed in basements, alleys, and remote riverbeds for continuous tracking.</li>
+  <li><strong>Geographic Information Systems (GIS):</strong> Spatial visualization software used to map flood-prone zones, model sea-level rises, and plan dynamic evacuation routes.</li>
+  <li><strong>Smart Computing &amp; Analytics Platforms:</strong> Hydrometeorological weather forecasting systems running predictive analytics to automatically issue early warnings.</li>
+</ol>
+
+<div class="diagram-box">
+  <div class="diagram-title">Flood Management System Workflow</div>
+  <div style="display:flex; gap:8px; flex-wrap:wrap; justify-content:center; align-items:stretch;">
+    <div class="arch-layer worker" style="min-width:160px; flex:1;">
+      <div class="al-name">Field Sensors</div>
+      <div class="al-desc">Water Level &amp; Rain Sensors</div>
+    </div>
+    <div class="arch-arrow" style="align-self:center; font-size:18px;">→</div>
+    <div class="arch-layer devops" style="min-width:160px; flex:1;">
+      <div class="al-name">Connectivity</div>
+      <div class="al-desc">LoRaWAN / WSN Networks</div>
+    </div>
+    <div class="arch-arrow" style="align-self:center; font-size:18px;">→</div>
+    <div class="arch-layer control" style="min-width:180px; flex:1;">
+      <div class="al-name">Analytics Platform</div>
+      <div class="al-desc">GIS &amp; Hydrological Smart Computing</div>
+    </div>
+    <div class="arch-arrow" style="align-self:center; font-size:18px;">→</div>
+    <div class="arch-layer warn" style="min-width:160px; flex:1;">
+      <div class="al-name">Output Action</div>
+      <div class="al-desc">Early Warnings / Evacuation Alerts</div>
+    </div>
+  </div>
+</div>
+</div>
+          `
+        },
+        {
+          id: "u3pa5", title: "Part-A: Q5 — Water Conservation",
+          content: `
+<div class="q-block">
+<div class="q-header">
+  <div class="q-num">Question 5 · 2 Marks · CO-5 · BL-1</div>
+  <div class="q-title">Provide examples of IoT solutions in water conservation systems.</div>
+  <div class="q-marks">2M</div>
+</div>
+
+<p>Key IoT solutions applied to optimize water utilization and eliminate non-revenue water loss include:</p>
+
+<ol>
+  <li><strong>Smart Water Meters for Dynamic Billing &amp; Leak Detection:</strong> IoT meters supporting two-way communication to track consumption in real-time and alert users when continuous flow indicates leaks.</li>
+  <li><strong>Smart Irrigation Controllers:</strong>
+    <ul>
+      <li><em>Soil Moisture Sensor Controllers:</em> Bypasses scheduled watering cycles when root-zone moisture exceeds specified volumetric thresholds.</li>
+      <li><em>Climate/ET-Based Controllers:</em> Dynamically adjusts irrigation runtimes based on local weather data.</li>
+    </ul>
+  </li>
+  <li><strong>IoT Add-on Sensors for Irrigation:</strong> Rain, freeze, and wind sensors that suspend irrigation during rain events or high wind conditions to prevent runoff.</li>
+  <li><strong>Rainwater Harvesting &amp; Filtration Monitoring:</strong> Real-time tank level and water quality monitoring for recycling filtered rainwater to toilets and domestic uses.</li>
+</ol>
+
+<div class="diagram-box">
+  <div class="diagram-title">Smart Water Conservation System Concept</div>
+  <div class="arch-stack">
+    <div class="arch-layer control">
+      <div class="al-name">IoT Central Water Management</div>
+    </div>
+    <div class="arch-arrow">↓</div>
+    <div style="display:flex; gap:8px; flex-wrap:wrap; justify-content:center;">
+      <div class="arch-layer worker" style="min-width:200px; flex:1;">
+        <div class="al-name">Smart Water Meters</div>
+        <div class="al-desc">Dynamic Billing &amp; Leak Alerts</div>
+      </div>
+      <div class="arch-layer worker" style="min-width:200px; flex:1;">
+        <div class="al-name">Smart Irrigation</div>
+        <div class="al-desc">Soil Moisture &amp; ET Sensors</div>
+      </div>
+      <div class="arch-layer worker" style="min-width:200px; flex:1;">
+        <div class="al-name">Rainwater &amp; Tank Level</div>
+        <div class="al-desc">Monitoring Sensors</div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+          `
+        },
+        {
+          id: "u3q1", title: "Part-B Q1: Cybersecurity Threats to Medical IoT (4M)",
+          content: `
+<div class="unit-heading">Unit III: Part-B — Medical IoT Cybersecurity</div>
+<div class="unit-sub">4-Mark Question</div>
+
+<div class="q-block">
+<div class="q-header">
+  <div class="q-num">Unit-III, Question 1 · 4M · CO-3 · BL-1</div>
+  <div class="q-title">Explain cybersecurity threats to IoT medical devices.</div>
+  <div class="q-marks">4M</div>
+</div>
+
+<p>Cybersecurity threats on medical IoT devices compromise patient safety, data privacy, and device availability. These threats are categorized into <strong>Attack Vectors</strong>, <strong>Post-Compromise Actions</strong>, and <strong>Impacts</strong>:</p>
+
+<h2>1. Attack Vectors (How devices are compromised)</h2>
+<ul>
+  <li><strong>Malware:</strong> Malicious code such as <strong>Viruses</strong> (blocking execution), <strong>Rootkits</strong> (gaining hidden administrator/root privileges), <strong>Trojans</strong> (disguised as updates), and <strong>Worms</strong> (spreading across networks).</li>
+  <li><strong>Software/Firmware Vulnerabilities:</strong> Exploiting unauthenticated firmware updates or known software bugs (e.g., pacemaker or infusion pump vulnerabilities allowing remote manipulation).</li>
+  <li><strong>Wireless Connectivity:</strong> Infiltrating insecure radio frequency channels to adjust settings or inject commands without physical contact.</li>
+</ul>
+
+<h2>2. Post-Compromise Actions (What attackers do after access)</h2>
+<ul>
+  <li><strong>Denial of Control / DoS:</strong> Disrupting operations by blocking information flow or depleting battery/memory resources.</li>
+  <li><strong>Device &amp; Configuration Manipulation:</strong> Maliciously modifying software settings, alarm thresholds, or exploiting privilege escalation.</li>
+  <li><strong>Spoofed Information &amp; Replay Attacks:</strong> Sending false telemetry data or replaying old intercepted messages to impersonate legitimate devices.</li>
+</ul>
+
+<h2>3. Impact on Patients</h2>
+<ul>
+  <li><strong>Patient Health &amp; Adverse Events:</strong> Causing cardiac failure, tachycardia/bradycardia, inappropriate drug dosage (e.g., insulin pumps), or hearing loss from cochlear implants.</li>
+  <li><strong>Privacy Compromise:</strong> Eavesdropping on transmission to expose sensitive medical records or implant serial numbers.</li>
+  <li><strong>Physical Destruction:</strong> Damaging medical hardware through unauthorized software commands.</li>
+</ul>
+
+<div class="diagram-box">
+  <div class="diagram-title">Overview of Medical IoT Cyber Threats</div>
+  <div class="arch-stack">
+    <div class="arch-layer warn">
+      <div class="al-name">MEDICAL IoT CYBER THREATS</div>
+    </div>
+    <div class="arch-arrow">↓</div>
+    <div style="display:flex; gap:12px; flex-wrap:wrap; justify-content:center;">
+      <div class="arch-layer" style="min-width:180px; flex:1;">
+        <div class="al-name">Attack Vectors</div>
+        <div class="al-desc">Malware, Firmware, Wireless</div>
+      </div>
+      <div class="arch-layer devops" style="min-width:180px; flex:1;">
+        <div class="al-name">Post-Compromise</div>
+        <div class="al-desc">DoS, Data Tampering, Spoofing</div>
+      </div>
+      <div class="arch-layer control" style="min-width:180px; flex:1;">
+        <div class="al-name">Impact / Adverse Events</div>
+        <div class="al-desc">Health risk, Privacy loss</div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+          `
+        },
+        {
+          id: "u3q2", title: "Part-B Q2: Countermeasures for Medical IoT (4M)",
+          content: `
+<div class="q-block">
+<div class="q-header">
+  <div class="q-num">Unit-III, Question 2 · 4M · CO-3 · BL-2</div>
+  <div class="q-title">Illustrate countermeasures used to protect IoT-based medical devices against cybersecurity threats.</div>
+  <div class="q-marks">4M</div>
+</div>
+
+<p>To secure medical IoT devices and address core security objectives, specific countermeasures are implemented across different layers:</p>
+
+<h2>1. Ensuring Confidentiality and Integrity</h2>
+<ul>
+  <li><strong>Data Encryption:</strong> Uses symmetric key ciphers (block and stream ciphers) to protect transmitted data from eavesdropping, as resource-constrained medical devices cannot support heavy public-key cryptography.</li>
+  <li><strong>Integrity Mechanisms:</strong> Utilizes message authentication codes, one-way hash functions, and digital signatures to prevent unauthorized data tampering or code injection.</li>
+</ul>
+
+<h2>2. Ensuring Availability</h2>
+<ul>
+  <li><strong>Resource Depletion &amp; Jamming Defense:</strong> Uses pattern/behavior analysis and alarm notification systems to alert users of active jamming or flooding attacks that drain battery or memory.</li>
+</ul>
+
+<h2>3. Ensuring Authentication and Authorization</h2>
+<ul>
+  <li><strong>Entity &amp; Origin Authentication:</strong> Verifies the claimed identity of entities (patients, doctors, servers) and validates the origin of transmitted data.</li>
+  <li><strong>Access Control Lists (ACLs):</strong> Restricts device reprogramming or therapy parameter updates (e.g., voltage and thresholds) strictly to authorized medical personnel (doctors and technicians).</li>
+</ul>
+
+<h2>4. Ensuring Nonrepudiation</h2>
+<ul>
+  <li><strong>Secure Access Logs (Auditing):</strong> Maintains secure, tamper-proof audit logs recording all operations performed by or on the device to prevent entities from denying past actions.</li>
+</ul>
+
+<div class="diagram-box">
+  <div class="diagram-title">Security Countermeasures Framework for Medical IoT</div>
+  <div class="arch-stack">
+    <div class="arch-layer control">
+      <div class="al-name">MEDICAL IoT SECURITY COUNTERMEASURES</div>
+    </div>
+    <div class="arch-arrow">↓</div>
+    <div class="arch-layer" style="border-color:var(--nv-green); background:var(--nv-green-soft);">
+      <div class="al-name" style="color:var(--nv-green);">Confidentiality &amp; Integrity</div>
+      <div class="al-desc">Symmetric Key Encryption &amp; Hashes</div>
+    </div>
+    <div class="arch-arrow">↓</div>
+    <div class="arch-layer worker">
+      <div class="al-name">Availability</div>
+      <div class="al-desc">Behavior Analysis &amp; Alarms</div>
+    </div>
+    <div class="arch-arrow">↓</div>
+    <div class="arch-layer devops">
+      <div class="al-name">Authentication &amp; Authorization</div>
+      <div class="al-desc">Entity Verification &amp; Access Control Lists (ACLs)</div>
+    </div>
+    <div class="arch-arrow">↓</div>
+    <div class="arch-layer warn">
+      <div class="al-name">Nonrepudiation</div>
+      <div class="al-desc">Secure Tamper-Proof Audit Logs</div>
+    </div>
+  </div>
+</div>
+</div>
+          `
+        }
+      ]
+    },
+    {
+      id: "u4", title: "Unit IV: E-Ticketing & EV Charging",
+      sections: [
+        {
+          id: "u4q3", title: "Part-B Q3: IoT E-Ticketing (8M)",
+          content: `
+<div class="unit-heading">Unit IV: Part-B — IoT E-Ticketing &amp; EV Charging</div>
+<div class="unit-sub">8-Mark Questions</div>
+
+<div class="q-block">
+<div class="q-header">
+  <div class="q-num">Unit-IV, Question 3 · 8M · CO-4 · BL-2</div>
+  <div class="q-title">How can IoT improve user convenience and operational efficiency for e-ticketing solutions?</div>
+  <div class="q-marks">8M</div>
+</div>
+
+<h2>1. Introduction to E-Ticketing</h2>
+<p>E-ticketing (electronic ticketing) refers to the digital storage of tickets for travel, events, and transportation, replacing traditional paper tickets with QR codes, barcodes, or mobile app confirmations. Integrating IoT into e-ticketing ecosystems bridges the gap between passengers and transport operators, significantly enhancing both user convenience and system-wide operational efficiency.</p>
+
+<h2>2. Improving User Convenience</h2>
+<ul>
+  <li><strong>Paperless &amp; Mobile Accessibility:</strong> Users store tickets directly on smartphones or tablets, eliminating physical paper waste and the hassle of carrying physical tickets.</li>
+  <li><strong>Seamless Online Booking &amp; Confirmation:</strong> Tickets can be purchased instantly through online websites and apps, serving as instant electronic confirmations.</li>
+  <li><strong>Secure Authentication:</strong> Incorporating secure QR codes or digital signatures ensures quick gate-scanning without manual inspection queues.</li>
+  <li><strong>Real-Time Flexibility:</strong> Users can easily modify bookings, receive instant schedule updates, and navigate transit systems through connected mobile interfaces.</li>
+</ul>
+
+<h2>3. Improving Operational Efficiency</h2>
+<ul>
+  <li><strong>Reduced Operating &amp; Handling Costs:</strong> Eliminating cash handling, paper printing, and manual ticket counters drastically lowers operational expenses for transit authorities.</li>
+  <li><strong>Real-Time Business Data &amp; Analytics:</strong> Operators gain live access to passenger volume data, peak travel times, and route popularity.</li>
+  <li><strong>Dynamic Pricing Models:</strong> IoT systems support automated dynamic pricing, adjusting fares based on real-time demand, time of day, or seat location to optimize vehicle capacity.</li>
+  <li><strong>Fraud Reduction:</strong> Secure digital authentication and centralized databases minimize counterfeiting, ticket skimming, and unauthorized duplication losses.</li>
+</ul>
+
+<div class="diagram-box">
+  <div class="diagram-title">IoT E-Ticketing Ecosystem</div>
+  <div class="arch-stack">
+    <div style="display:flex; gap:16px; flex-wrap:wrap; justify-content:center;">
+      <div class="arch-layer control" style="min-width:220px; flex:1;">
+        <div class="al-name">User Smartphone</div>
+        <div class="al-desc">QR Code / Mobile App</div>
+      </div>
+      <div class="arch-arrow" style="align-self:center; font-size:18px;">◄──►</div>
+      <div class="arch-layer devops" style="min-width:220px; flex:1;">
+        <div class="al-name">Cloud Booking DB</div>
+        <div class="al-desc">Dynamic Pricing / Real-Time Data</div>
+      </div>
+    </div>
+    <div class="arch-arrow">↓ <span>Wireless Scan</span></div>
+    <div style="display:flex; gap:16px; flex-wrap:wrap; justify-content:center;">
+      <div class="arch-layer worker" style="min-width:220px; flex:1;">
+        <div class="al-name">IoT Smart Gate Barriers</div>
+        <div class="al-desc">Instant Validation</div>
+      </div>
+      <div class="arch-arrow" style="align-self:center; font-size:18px;">◄──►</div>
+      <div class="arch-layer" style="min-width:220px; flex:1; border-color:var(--nv-green); background:var(--nv-green-soft);">
+        <div class="al-name" style="color:var(--nv-green);">Operator Dashboard</div>
+        <div class="al-desc">Analytics Platform</div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+          `
+        },
+        {
+          id: "u4q4", title: "Part-B Q4: IoT EV Charge Scheduling (8M)",
+          content: `
+<div class="q-block">
+<div class="q-header">
+  <div class="q-num">Unit-IV, Question 4 · 8M · CO-4 · BL-3</div>
+  <div class="q-title">Explain the role of IoT for charge scheduling optimization at EV charging stations.</div>
+  <div class="q-marks">8M</div>
+</div>
+
+<h2>1. Introduction to EV Charging &amp; Scheduling</h2>
+<p>An Electric Vehicle (EV) is powered by an electric motor drawing energy from a battery that can be charged from external sources. As EVs become dominant in modern transportation and smart cities, managing power demand through <strong>Charge Scheduling</strong> is critical to avoid main grid congestion and overloading.</p>
+
+<h2>2. Objectives of Smart EV Scheduling</h2>
+<ul>
+  <li><strong>Preventing Grid Congestion:</strong> Efficient scheduling allocates energy from available resources without overloading distribution transformers.</li>
+  <li><strong>Cost Minimization:</strong> Reduces electricity bills and operational costs by strategically timing charging sessions based on peak/off-peak pricing.</li>
+  <li><strong>Balancing Peak-to-Average Ratios:</strong> Optimizes overall load distribution across smart distribution networks.</li>
+</ul>
+
+<h2>3. Centralized vs. Decentralized Scheduling Models</h2>
+<ul>
+  <li><strong>Centralized Model:</strong> A central authority coordinates scheduling for all connected EVs, highly effective in reducing total costs and minimizing the peak-to-average load ratio.</li>
+  <li><strong>Decentralized Model:</strong> Unregulated peer entry where individual vehicles (peers) make autonomous local decisions for their personal benefit, communicating directly to share services.</li>
+</ul>
+
+<h2>4. EV Charging Levels &amp; Power Dynamics</h2>
+<p>Smart scheduling systems coordinate charging based on the specific power level required by the user:</p>
+
+<table>
+  <tr><th>Level</th><th>Voltage / Power</th><th>Charging Time</th><th>Ideal Use Case</th></tr>
+  <tr><td><strong>Level 1</strong> (Slow)</td><td>120VAC / 16A, 1.92 kW</td><td>~10 hours</td><td>Overnight home charging</td></tr>
+  <tr><td><strong>Level 2</strong> (Standard)</td><td>208–240VAC, 2.5–19.2 kW</td><td>6–8 hours</td><td>Workplaces</td></tr>
+  <tr><td><strong>Level 3</strong> (DC Fast)</td><td>Off-board, 75 kW</td><td>~30 minutes</td><td>High price, public stations</td></tr>
+  <tr><td><strong>Level 4</strong> (DC Very Fast)</td><td>Off-board, 240 kW</td><td>~15 minutes</td><td>Minimize waiting at public stations</td></tr>
+</table>
+
+<div class="diagram-box">
+  <div class="diagram-title">Electric Vehicles Scheduling System Model</div>
+  <div class="arch-stack">
+    <div class="arch-layer control">
+      <div class="al-name">Transmission Lines</div>
+    </div>
+    <div class="arch-arrow">↓</div>
+    <div style="display:flex; gap:16px; flex-wrap:wrap; justify-content:center;">
+      <div class="arch-layer worker" style="min-width:220px; flex:1;">
+        <div class="al-name">Charging Station 1</div>
+        <div class="al-desc">Slow / Average Points</div>
+      </div>
+      <div class="arch-layer worker" style="min-width:220px; flex:1;">
+        <div class="al-name">Charging Station 2</div>
+        <div class="al-desc">Fast / Very Fast Points</div>
+      </div>
+    </div>
+    <div class="arch-arrow">↓</div>
+    <div class="arch-layer devops">
+      <div class="al-name">Electric Vehicles</div>
+      <div class="al-desc">V2G, G2V, V2V Strategies</div>
+    </div>
+  </div>
+</div>
+</div>
+          `
+        }
+      ]
+    },
+    {
+      id: "u5", title: "Unit V: Wastewater & Water Storage",
+      sections: [
+        {
+          id: "u5q5", title: "Part-B Q5: IoT Wastewater Monitoring (8M)",
+          content: `
+<div class="unit-heading">Unit V: Part-B — Wastewater &amp; Water Storage</div>
+<div class="unit-sub">8-Mark Questions</div>
+
+<div class="q-block">
+<div class="q-header">
+  <div class="q-num">Unit-V, Question 5 · 8M · CO-5 · BL-2</div>
+  <div class="q-title">Discuss the benefits of using IoT for wastewater quality monitoring.</div>
+  <div class="q-marks">8M</div>
+</div>
+
+<h2>1. Introduction to Wastewater Management &amp; IoT</h2>
+<p>A sewerage system is a network of underground pipes, manholes, and pumping stations designed to collect, transport, and treat wastewater from residential, commercial, and industrial areas safely. The primary goal is to prevent environmental pollution and protect public health. Integrating IoT technologies into wastewater management brings real-time automation, intelligence, and continuous monitoring to the entire treatment pipeline.</p>
+
+<h2>2. Key Benefits of Using IoT for Wastewater Quality Monitoring</h2>
+<ul>
+  <li><strong>Real-Time Parameter Tracking:</strong> IoT sensors deployed throughout the collection and treatment phases continuously monitor crucial water quality parameters such as pH levels, dissolved oxygen, turbidity, and specific pollutant concentrations.</li>
+  <li><strong>Optimized Treatment Processes:</strong> Real-time data ensures that biological and chemical treatment stages (such as secondary biological treatment using microorganisms) are running at peak efficiency, preventing under-treatment or chemical overdosing.</li>
+  <li><strong>Automated Leak &amp; Overflow Detection:</strong> Flow and pressure sensors installed in collection lines and pumping stations detect sudden variations or blockages instantly, triggering alarms before sewer overflows occur.</li>
+  <li><strong>Predictive Maintenance:</strong> Continuous monitoring of equipment status and wastewater flow allows operators to predict potential blockages or pump failures, scheduling proactive maintenance to avoid costly breakdowns.</li>
+  <li><strong>Smart Infrastructure Safety (Smart Manholes):</strong> Manholes equipped with IoT sensors monitor internal gas levels, temperature, and water depth to safeguard maintenance personnel and prevent city-level hazards.</li>
+  <li><strong>Environmental Compliance &amp; Safe Disposal:</strong> Monitoring sensors placed at the final outfall/disposal point ensure that treated wastewater released into rivers or lakes strictly complies with local environmental regulations.</li>
+  <li><strong>Cloud Analytics &amp; Machine Learning:</strong> Aggregated IoT data on cloud platforms is analyzed using machine learning algorithms to identify long-term trends, anomalies, and operational insights for smarter decision-making.</li>
+</ul>
+
+<div class="diagram-box">
+  <div class="diagram-title">Wastewater Treatment &amp; IoT Monitoring Workflow</div>
+  <div style="display:flex; gap:8px; flex-wrap:wrap; justify-content:center; align-items:stretch;">
+    <div class="arch-layer worker" style="min-width:180px; flex:1;">
+      <div class="al-name">Collection System</div>
+      <div class="al-desc">Flow &amp; Level Sensors</div>
+    </div>
+    <div class="arch-arrow" style="align-self:center; font-size:18px;">→</div>
+    <div class="arch-layer control" style="min-width:180px; flex:1;">
+      <div class="al-name">Treatment Plant</div>
+      <div class="al-desc">Screening, Primary &amp; Secondary Treatment</div>
+    </div>
+    <div class="arch-arrow" style="align-self:center; font-size:18px;">→</div>
+    <div class="arch-layer devops" style="min-width:180px; flex:1;">
+      <div class="al-name">Disposal / Outfall</div>
+      <div class="al-desc">Quality Monitoring &amp; Compliance</div>
+    </div>
+  </div>
+  <div style="text-align:center; margin-top:16px;">
+    <div class="arch-arrow">▲ <span>Real-Time Sensor Feed</span></div>
+    <div class="arch-layer" style="border-color:var(--nv-green); background:var(--nv-green-soft); min-width:300px; margin-top:8px;">
+      <div class="al-name" style="color:var(--nv-green);">Cloud Analytics &amp; Machine Learning AI</div>
+    </div>
+  </div>
+</div>
+</div>
+          `
+        },
+        {
+          id: "u5q6", title: "Part-B Q6: IoT Water Storage Systems (8M)",
+          content: `
+<div class="q-block">
+<div class="q-header">
+  <div class="q-num">Unit-V, Question 6 · 8M · CO-5 · BL-3</div>
+  <div class="q-title">How can IoT improve the efficiency of water storage systems in smart cities?</div>
+  <div class="q-marks">8M</div>
+</div>
+
+<h2>1. Introduction to Water Storage Systems</h2>
+<p>The water storage and conveyance system includes infrastructure designed to collect, store, and transport water from sources (groundwater, surface water, rainwater) to end users. Key storage facilities include:</p>
+<ul>
+  <li><strong>Pump House &amp; Machinery:</strong> Fetches water from sources and supplies it to pipelines or elevated storage.</li>
+  <li><strong>Elevated Surface Reservoirs (ESR):</strong> Elevated tanks that supply water via gravity or pumps across undulating terrain.</li>
+  <li><strong>Sumps:</strong> Underground circular storage tanks acting as intermediate or contingency storage (storing 1.5 to 2 times the ESR capacity or 2 to 5 days of water requirements) before water is pumped to ESRs.</li>
+</ul>
+
+<h2>2. How IoT Improves Water Storage Efficiency</h2>
+<ul>
+  <li><strong>Automated Water Level Management:</strong> Water level sensors installed in open wells, bore wells, and storage sumps continuously monitor storage depths, ensuring sustainable groundwater extraction and preventing dry-running of pumps.</li>
+  <li><strong>Pressure &amp; Flow Monitoring in Pumping Systems:</strong> Pressure sensors monitor and maintain desired pressure levels in pumping machinery, while flow sensors measure water conveyance rates to ensure optimal distribution without pipe bursts.</li>
+  <li><strong>Advanced Leak Detection:</strong> Leak detection sensors placed in underground sumps and storage structures identify structural cracks or seepages early, eliminating non-revenue water loss.</li>
+  <li><strong>Smart Control Systems:</strong> Control systems utilize real-time topography sensors, power availability metrics, and demand data to seamlessly switch between gravity-fed and active pumping distribution modes.</li>
+  <li><strong>Rainwater Harvesting Optimization:</strong> Rainfall sensors measure intensity and volume to automate rainwater collection tanks, optimizing storage capacity before distribution for domestic uses like toilet flushing.</li>
+  <li><strong>Data-Driven Maintenance &amp; Metering:</strong> Smart water meters integrated into storage outputs track two-way consumption data, detect continuous nighttime flow anomalies (indicating hidden leaks), and dynamically calculate bills without manual meter reading.</li>
+</ul>
+
+<div class="diagram-box">
+  <div class="diagram-title">IoT Sensors in Water Storage &amp; Distribution</div>
+  <div class="arch-stack">
+    <div style="display:flex; gap:6px; flex-wrap:wrap; justify-content:center; align-items:stretch;">
+      <div class="arch-layer worker" style="min-width:140px; flex:1; font-size:11px;">
+        <div class="al-name" style="font-size:12px;">Water Sources</div>
+        <div class="al-desc">Ground / Surface</div>
+      </div>
+      <div class="arch-arrow" style="align-self:center;">→</div>
+      <div class="arch-layer control" style="min-width:160px; flex:1; font-size:11px;">
+        <div class="al-name" style="font-size:12px;">Pump House &amp; Sump</div>
+        <div class="al-desc">Level &amp; Pressure Sensors</div>
+      </div>
+      <div class="arch-arrow" style="align-self:center;">→</div>
+      <div class="arch-layer devops" style="min-width:160px; flex:1; font-size:11px;">
+        <div class="al-name" style="font-size:12px;">Elevated Storage (ESR)</div>
+        <div class="al-desc">Flow &amp; Leak Sensors</div>
+      </div>
+      <div class="arch-arrow" style="align-self:center;">→</div>
+      <div class="arch-layer" style="min-width:160px; flex:1; font-size:11px; border-color:var(--nv-green); background:var(--nv-green-soft);">
+        <div class="al-name" style="font-size:12px; color:var(--nv-green);">Distribution Network</div>
+        <div class="al-desc">Smart Metering &amp; Taps</div>
+      </div>
+    </div>
+    <div class="arch-arrow">↓ <span>All sensor feeds converge</span></div>
+    <div class="arch-layer warn">
+      <div class="al-name">IoT Central Cloud Platform</div>
+      <div class="al-desc">Dynamic Control &amp; Leak Alerts</div>
+    </div>
+  </div>
+</div>
+</div>
+          `
+        }
+      ]
+    },
+    {
+      id: "addon", title: "Add-On: High-Yield Practice Questions",
+      sections: [
+        {
+          id: "addon_pa", title: "Add-On Part-A: 2-Mark Questions (2 Q)",
+          content: `
+<div class="unit-heading">Add-On: High-Yield Practice Questions</div>
+<div class="unit-sub">Extra Part-A &amp; Part-B questions covering important syllabus topics not in the sessional paper</div>
+
+<div class="q-block">
+<div class="q-header">
+  <div class="q-num">Add-On Part-A · 2 Marks Each</div>
+  <div class="q-title">High-Yield 2-Mark Practice Questions</div>
+  <div class="q-marks">2M × 2 = 4 Marks</div>
+</div>
+
+<div class="qa-card">
+  <div class="qa-q">1. What is Vehicle-to-Grid (V2G) technology? [CO-4] [BL-1]</div>
+  <div class="qa-a">
+    <p><strong>Vehicle-to-Grid (V2G)</strong> describes a system in which plug-in electric vehicles (BEVs and PHEVs) communicate and interact with the electric grid to exchange services, such as buying electricity from the grid or selling excess battery power back to the grid with variable charging rates.</p>
+  </div>
+</div>
+
+<div class="qa-card">
+  <div class="qa-q">2. Differentiate between GPS and GIS in brief. [CO-4] [BL-2]</div>
+  <div class="qa-a">
+    <p><strong>GPS (Global Positioning System):</strong> A satellite-based navigation system used primarily for real-time positioning, tracking, and determining exact receiver coordinates on Earth.</p>
+    <p><strong>GIS (Geographic Information System):</strong> A computer-based system used for capturing, storing, managing, and analyzing spatial/geographical data to create maps and support decisions.</p>
+  </div>
+</div>
+</div>
+          `
+        },
+        {
+          id: "addon_q1", title: "Add-On Q1: SPS 4-Layer Architecture (8M)",
+          content: `
+<div class="q-block">
+<div class="q-header">
+  <div class="q-num">Add-On Question 1 · 8M · CO-4 · BL-2</div>
+  <div class="q-title">Explain the four layers of the Smart Parking System (SPS) architecture with a neat diagram.</div>
+  <div class="q-marks">8M</div>
+</div>
+
+<p>A Smart Parking System (SPS) relies on real-time data processed through a hierarchical multi-layer architecture:</p>
+
+<ol>
+  <li><strong>Sensing Layer:</strong> The backbone of SPS, responsible for detecting the presence or absence of vehicles using sensors (ultrasonic, infrared, magnetic, RFID, CCTV, and piezoelectric sensors).</li>
+  <li><strong>Networking Layer:</strong> The communication segment that handles message exchange between transmitters, receivers, and anchors using wireless protocols like ZigBee, Wi-Fi, LoRaWAN, and cellular IoT.</li>
+  <li><strong>Middleware Layer:</strong> The core processing layer acting as a web server and database. It runs intelligent algorithms to process real-time data, store information, and link end-users to lower-layer devices.</li>
+  <li><strong>Application Layer:</strong> The top-tier interface connecting end-users (clients) with the SPS via mobile apps, web browsers, or stationary information panels for reservations and guidance.</li>
+</ol>
+
+<div class="diagram-box">
+  <div class="diagram-title">Smart Parking System Architecture (4 Layers)</div>
+  <div class="arch-stack">
+    <div class="arch-layer control">
+      <div class="al-name">APPLICATION LAYER</div>
+      <div class="al-desc">Client Devices, Mobile Apps, Panels</div>
+    </div>
+    <div class="arch-arrow">↓ <span>HTTP / JSON / Internet</span></div>
+    <div class="arch-layer devops">
+      <div class="al-name">MIDDLEWARE LAYER</div>
+      <div class="al-desc">Web Server, Database, Micro-Cloud</div>
+    </div>
+    <div class="arch-arrow">↓ <span>Wireless 802.15.4 / ZigBee</span></div>
+    <div class="arch-layer" style="border-color:var(--purple); background:var(--purple-soft);">
+      <div class="al-name" style="color:var(--purple);">NETWORKING LAYER</div>
+      <div class="al-desc">Internet &amp; Communication Protocols</div>
+    </div>
+    <div class="arch-arrow">↓ <span>Sensor Signals</span></div>
+    <div class="arch-layer worker">
+      <div class="al-name">SENSING LAYER</div>
+      <div class="al-desc">Parking Lot — Free / Occupied Spot Sensors</div>
+      <div class="arch-sub-blocks">
+        <div class="arch-sub"><strong>Free Spot</strong>Ultrasonic / IR</div>
+        <div class="arch-sub"><strong>Occupied</strong>Magnetic / RFID</div>
+        <div class="arch-sub"><strong>CCTV</strong>Vision-based</div>
+        <div class="arch-sub"><strong>Piezo</strong>Pressure-based</div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+          `
+        },
+        {
+          id: "addon_q2", title: "Add-On Q2: Smart Water Network Challenges (8M)",
+          content: `
+<div class="q-block">
+<div class="q-header">
+  <div class="q-num">Add-On Question 2 · 8M · CO-5 · BL-2</div>
+  <div class="q-title">Discuss the key challenges in IoT-based Smart Water Network Management (SWNM).</div>
+  <div class="q-marks">8M</div>
+</div>
+
+<p>Deploying IoT technology in large-scale water supply and network management introduces several critical challenges:</p>
+
+<ol>
+  <li><strong>Power Usage:</strong> Water sensors operate on batteries for years. Running embedded processors to measure and transmit data drastically increases energy consumption and depletes battery life.</li>
+  <li><strong>Complexity:</strong> Integrating simultaneous functions—such as leakage detection, pipeline health monitoring, and water quality testing—on the same network creates high system design complexity.</li>
+  <li><strong>Cost of Deployment:</strong> Because water supply infrastructure spans large geographic areas, deploying a wide array of real-time monitoring sensors involves significant capital expenditure.</li>
+  <li><strong>Connectivity Challenge:</strong> Maintaining stable wireless connectivity across underground pipes, remote water bodies, and complex urban environments is difficult.</li>
+  <li><strong>Security &amp; Privacy:</strong> As water networks connect to the cloud, they become vulnerable to cyberattacks, making data security and user privacy major concerns.</li>
+  <li><strong>Big Data Analysis:</strong> Vast amounts of real-time sensor data require heavy computational tools, leading to long processing times and high power consumption.</li>
+  <li><strong>Coverage Problem:</strong> Ensuring continuous sensor coverage and reliable wireless signal propagation across harsh physical environments is challenging.</li>
+  <li><strong>Interoperability:</strong> Different micro-electromechanical sensors and legacy devices must be able to communicate seamlessly and exchange data with newer IoT systems.</li>
+</ol>
+
+<div class="diagram-box">
+  <div class="diagram-title">8 Key Challenges in IoT Smart Water Network Management</div>
+  <div class="compare-grid" style="grid-template-columns:1fr 1fr;">
+    <div class="compare-card" style="border-left:3px solid var(--red);">
+      <h4 style="color:var(--red);">⚠ Power Usage</h4>
+      <p style="font-size:12px;">Battery depletion from embedded processors</p>
+    </div>
+    <div class="compare-card" style="border-left:3px solid var(--orange);">
+      <h4 style="color:var(--orange);">🔧 Complexity</h4>
+      <p style="font-size:12px;">Multi-function integration on one network</p>
+    </div>
+    <div class="compare-card" style="border-left:3px solid var(--yellow);">
+      <h4 style="color:var(--yellow);">💰 Cost</h4>
+      <p style="font-size:12px;">Large geographic sensor deployment</p>
+    </div>
+    <div class="compare-card" style="border-left:3px solid var(--purple);">
+      <h4 style="color:var(--purple);">📡 Connectivity</h4>
+      <p style="font-size:12px;">Underground pipes &amp; remote areas</p>
+    </div>
+    <div class="compare-card" style="border-left:3px solid var(--red);">
+      <h4 style="color:var(--red);">🔒 Security</h4>
+      <p style="font-size:12px;">Cloud-connected cyberattack vulnerability</p>
+    </div>
+    <div class="compare-card" style="border-left:3px solid var(--cyan);">
+      <h4 style="color:var(--cyan);">📊 Big Data</h4>
+      <p style="font-size:12px;">Heavy computation &amp; long processing</p>
+    </div>
+    <div class="compare-card" style="border-left:3px solid var(--nv-green);">
+      <h4 style="color:var(--nv-green);">🗺️ Coverage</h4>
+      <p style="font-size:12px;">Signal propagation in harsh environments</p>
+    </div>
+    <div class="compare-card" style="border-left:3px solid var(--orange);">
+      <h4 style="color:var(--orange);">🔌 Interoperability</h4>
+      <p style="font-size:12px;">Legacy devices &amp; new IoT systems</p>
+    </div>
+  </div>
+</div>
+</div>
+          `
+        }
+      ]
+    }
+  ]
+};
+
+const flashcardData = [
+  [
+    {q:"List 5 cyber threats on medical IoT devices.",a:"1) Malware (Viruses, Rootkits, Trojans, Worms). 2) Firmware/software vulnerability exploitation. 3) Wireless interception (MitM, Eavesdropping, Replay). 4) DoS & resource depletion (battery drain). 5) Privilege escalation & data manipulation."},
+    {q:"How does IoT help smart parking?",a:"1) Real-time detection via ultrasonic/IR/magnetic/RFID/CCTV sensors. 2) Wireless communication (ZigBee/LoRaWAN/Wi-Fi) to cloud. 3) Dynamic reservation & guidance via mobile apps. 4) Automated cashless payments & access control."},
+    {q:"Purpose of GPS?",a:"Satellite-based navigation system providing precise real-time location (latitude, longitude, altitude) and exact time information anywhere on Earth."},
+    {q:"Purpose of GIS?",a:"Computer-based data management system to capture, store, analyze, and visually display spatial/geographic data for maps and urban planning decisions."},
+    {q:"4 technologies in flood management?",a:"1) WSN (water level, flow, rainfall sensors). 2) LoRa/LoRaWAN (long-range low-power communication). 3) GIS (flood zone mapping, evacuation routes). 4) Smart computing & analytics (predictive early warnings)."},
+    {q:"4 IoT solutions for water conservation?",a:"1) Smart water meters (dynamic billing & leak detection). 2) Smart irrigation controllers (soil moisture & ET-based). 3) IoT add-on sensors (rain/freeze/wind). 4) Rainwater harvesting & filtration monitoring."},
+    {q:"3 categories of medical IoT cyber threats?",a:"1) Attack Vectors (malware, firmware flaws, wireless MitM). 2) Post-compromise actions (DoS, data tampering, spoofing). 3) Impact (health risk, privacy loss, physical destruction)."},
+    {q:"4 security countermeasures for medical IoT?",a:"1) Confidentiality & Integrity: symmetric key encryption, hashes, digital signatures. 2) Availability: behavior analysis & alarms. 3) Authentication & Authorization: entity verification & ACLs. 4) Nonrepudiation: secure tamper-proof audit logs."},
+    {q:"What is nonrepudiation in medical IoT?",a:"Prevents entities from denying past actions. Implemented via secure, tamper-proof audit logs recording all operations performed by or on the device."},
+    {q:"Why use symmetric key encryption for medical IoT?",a:"Resource-constrained medical devices cannot support heavy public-key cryptography. Symmetric key ciphers (block and stream) protect transmitted data from eavesdropping."}
+  ],
+  [
+    {q:"How does IoT improve e-ticketing user convenience?",a:"1) Paperless mobile accessibility. 2) Seamless online booking & instant confirmation. 3) Secure QR code authentication. 4) Real-time flexibility for booking modifications and schedule updates."},
+    {q:"How does IoT improve e-ticketing operational efficiency?",a:"1) Reduced operating costs (no cash/paper/manual counters). 2) Real-time business data & analytics. 3) Dynamic pricing models. 4) Fraud reduction via secure digital authentication."},
+    {q:"What is EV charge scheduling?",a:"Managing power demand at EV charging stations through efficient scheduling to avoid main grid congestion and overloading, while minimizing costs and balancing peak-to-average load ratios."},
+    {q:"Centralized vs Decentralized EV scheduling?",a:"Centralized: central authority coordinates all EVs — effective for cost reduction and peak-to-average ratio. Decentralized: individual vehicles make autonomous local decisions, communicating peer-to-peer."},
+    {q:"EV Level 1 charging specs?",a:"120VAC / 16A, 1.92 kW power, ~10 hours charging time. Ideal for overnight home charging."},
+    {q:"EV Level 2 charging specs?",a:"208–240VAC, 2.5–19.2 kW power, 6–8 hours charging time. Ideal for workplaces."},
+    {q:"EV Level 3 vs Level 4?",a:"Level 3: DC Fast, off-board, 75 kW, ~30 min. Level 4: DC Very Fast, off-board, 240 kW, ~15 min. Both high price, for public stations where waiting must be minimized."},
+    {q:"3 objectives of smart EV scheduling?",a:"1) Preventing grid congestion (no transformer overload). 2) Cost minimization (peak/off-peak timing). 3) Balancing peak-to-average ratios across distribution networks."},
+    {q:"What are V2G, G2V, V2V?",a:"Vehicle-to-Grid (V2G): EV feeds power back to grid. Grid-to-Vehicle (G2V): grid charges EV. Vehicle-to-Vehicle (V2V): EV charges another EV directly."},
+    {q:"IoT E-Ticketing ecosystem components?",a:"User smartphone (QR/app) ↔ Cloud Booking DB (dynamic pricing) → IoT Smart Gate Barriers (instant validation) ↔ Operator Dashboard (analytics)."}
+  ],
+  [
+    {q:"What is a sewerage system?",a:"Network of underground pipes, manholes, and pumping stations to collect, transport, and treat wastewater from residential, commercial, and industrial areas. Goal: prevent pollution and protect public health."},
+    {q:"7 benefits of IoT wastewater monitoring?",a:"1) Real-time parameter tracking (pH, DO, turbidity). 2) Optimized treatment processes. 3) Automated leak & overflow detection. 4) Predictive maintenance. 5) Smart manholes (gas/temp/depth). 6) Environmental compliance. 7) Cloud analytics & ML."},
+    {q:"What do smart manholes monitor?",a:"Internal gas levels, temperature, and water depth to safeguard maintenance personnel and prevent city-level hazards."},
+    {q:"What is Elevated Surface Reservoir (ESR)?",a:"Elevated tanks that supply water via gravity or pumps across undulating terrain in water storage systems."},
+    {q:"What are sumps in water storage?",a:"Underground circular storage tanks acting as intermediate/contingency storage, holding 1.5–2× ESR capacity or 2–5 days of water, before pumping to ESRs."},
+    {q:"6 ways IoT improves water storage efficiency?",a:"1) Automated water level management. 2) Pressure & flow monitoring. 3) Advanced leak detection. 4) Smart control systems (gravity/pump switching). 5) Rainwater harvesting optimization. 6) Data-driven maintenance & smart metering."},
+    {q:"What do pressure sensors do in water storage?",a:"Monitor and maintain desired pressure levels in pumping machinery, while flow sensors measure conveyance rates to ensure optimal distribution without pipe bursts."},
+    {q:"How do smart water meters detect leaks?",a:"Track two-way consumption data, detect continuous nighttime flow anomalies (indicating hidden leaks), and dynamically calculate bills without manual meter reading."},
+    {q:"IoT wastewater workflow stages?",a:"Collection System (flow/level sensors) → Treatment Plant (screening, primary & secondary) → Disposal/Outfall (quality monitoring & compliance). All feeds go to Cloud Analytics & ML AI."},
+    {q:"IoT water storage & distribution flow?",a:"Water Sources → Pump House & Sump (level/pressure sensors) → Elevated Storage ESR (flow/leak sensors) → Distribution Network (smart metering). All converge to IoT Central Cloud Platform."}
+  ],
+  [
+    {q:"What is Vehicle-to-Grid (V2G)?",a:"A system where plug-in EVs (BEVs/PHEVs) communicate with the electric grid to exchange services — buying electricity or selling excess battery power back with variable charging rates."},
+    {q:"GPS vs GIS (brief)?",a:"GPS = satellite-based navigation for real-time positioning & coordinates. GIS = computer-based system for capturing, storing, managing & analyzing spatial data to create maps and support decisions."},
+    {q:"4 layers of Smart Parking System (SPS)?",a:"1) Sensing Layer (ultrasonic/IR/magnetic/RFID/CCTV/piezo sensors). 2) Networking Layer (ZigBee/Wi-Fi/LoRaWAN/cellular). 3) Middleware Layer (web server, database, algorithms). 4) Application Layer (mobile apps, panels, reservations)."},
+    {q:"What does the SPS Sensing Layer do?",a:"Backbone of SPS — detects presence/absence of vehicles using ultrasonic, infrared, magnetic, RFID, CCTV, and piezoelectric sensors."},
+    {q:"What does the SPS Middleware Layer do?",a:"Core processing layer — acts as web server & database, runs intelligent algorithms to process real-time data, stores information, and links end-users to lower-layer devices."},
+    {q:"8 challenges in IoT Smart Water Network Management?",a:"1) Power usage (battery depletion). 2) Complexity (multi-function integration). 3) Cost (large geographic deployment). 4) Connectivity (underground/remote). 5) Security & privacy (cyberattacks). 6) Big data analysis (heavy computation). 7) Coverage (harsh environments). 8) Interoperability (legacy + new devices)."},
+    {q:"Why is power usage a challenge in SWNM?",a:"Water sensors operate on batteries for years. Running embedded processors to measure and transmit data drastically increases energy consumption and depletes battery life."},
+    {q:"Why is interoperability a challenge in SWNM?",a:"Different micro-electromechanical sensors and legacy devices must communicate seamlessly and exchange data with newer IoT systems."},
+    {q:"SPS architecture data flow?",a:"Sensing Layer (sensor signals) → Networking Layer (ZigBee/802.15.4) → Middleware Layer (HTTP/JSON) → Application Layer (client apps/panels)."},
+    {q:"What is the SPS Application Layer?",a:"Top-tier interface connecting end-users with SPS via mobile apps, web browsers, or stationary information panels for reservations and guidance."}
+  ]
+];
+
+let currentUnit = 0;
+let currentSection = 0;
+let readSections = new Set();
+
+function renderSidebar() {
+  const nav = document.getElementById('sidebarNav');
+  nav.innerHTML = '';
+  courseData.units.forEach((unit, ui) => {
+    const btn = document.createElement('button');
+    btn.className = 'unit-btn' + (ui === currentUnit ? ' active' : '');
+    btn.innerHTML = unit.title + '<span class="ch">▸</span>';
+    btn.onclick = () => { currentUnit = ui; currentSection = 0; renderSidebar(); renderContent(); };
+    nav.appendChild(btn);
+    const list = document.createElement('div');
+    list.className = 'sec-list' + (ui === currentUnit ? ' open' : '');
+    unit.sections.forEach((sec, si) => {
+      const link = document.createElement('a');
+      link.className = 'sec-link' + (ui === currentUnit && si === currentSection ? ' active' : '');
+      link.textContent = sec.title;
+      link.onclick = (e) => { e.preventDefault(); currentUnit = ui; currentSection = si; renderSidebar(); renderContent(); };
+      list.appendChild(link);
+    });
+    nav.appendChild(list);
+  });
+}
+
+function renderContent() {
+  const area = document.getElementById('contentArea');
+  const unit = courseData.units[currentUnit];
+  const sec = unit.sections[currentSection];
+  let html = sec.content;
+  const prevDisabled = currentUnit === 0 && currentSection === 0;
+  const nextDisabled = currentUnit === courseData.units.length - 1 && currentSection === unit.sections.length - 1;
+  let prevTarget = null, nextTarget = null;
+  if (!prevDisabled) {
+    if (currentSection > 0) prevTarget = [currentUnit, currentSection - 1];
+    else prevTarget = [currentUnit - 1, courseData.units[currentUnit - 1].sections.length - 1];
+  }
+  if (!nextDisabled) {
+    if (currentSection < unit.sections.length - 1) nextTarget = [currentUnit, currentSection + 1];
+    else nextTarget = [currentUnit + 1, 0];
+  }
+  html += '<div class="top-nav">';
+  html += '<button class="nav-btn" ' + (prevDisabled ? 'disabled' : '') + ' onclick="' + (prevTarget ? 'jumpTo(' + prevTarget[0] + ',' + prevTarget[1] + ')' : '') + '">← Previous</button>';
+  html += '<span style="font-size:13px; color:var(--text-tertiary);">' + (currentSection + 1) + ' of ' + unit.sections.length + '</span>';
+  html += '<button class="nav-btn" ' + (nextDisabled ? 'disabled' : '') + ' onclick="' + (nextTarget ? 'jumpTo(' + nextTarget[0] + ',' + nextTarget[1] + ')' : '') + '">Next →</button>';
+  html += '</div>';
+  if (currentSection === unit.sections.length - 1 && flashcardData[currentUnit]) {
+    html += '<h2 style="margin-top:40px; font-size:20px;">Quick Review Flashcards</h2>';
+    html += '<p style="font-size:13px; color:var(--text-tertiary); margin-bottom:16px;">Click cards to reveal answers</p>';
+    flashcardData[currentUnit].forEach(function(card) {
+      html += '<div class="flashcard" onclick="this.classList.toggle(\'flipped\')"><div class="fc-q">' + card.q + '</div><div class="fc-a">' + card.a + '</div><div class="fc-hint">Click to flip</div></div>';
+    });
+  }
+  area.innerHTML = html;
+  readSections.add(sec.id);
+  updateProgress();
+  window.scrollTo(0, 0);
+}
+
+function updateProgress() {
+  const total = courseData.units.reduce(function(a, u) { return a + u.sections.length; }, 0);
+  const pct = Math.round((readSections.size / total) * 100);
+  document.getElementById('progressBar').style.width = pct + '%';
+  document.getElementById('progressText').textContent = pct + '% complete';
+}
+
+function jumpTo(ui, si) {
+  currentUnit = ui; currentSection = si;
+  renderSidebar(); renderContent();
+}
+
+function setupSearch() {
+  const box = document.getElementById('searchBox');
+  const res = document.getElementById('searchResults');
+  box.addEventListener('input', function(e) {
+    const q = e.target.value.toLowerCase().trim();
+    if (!q) { res.style.display = 'none'; return; }
+    const matches = [];
+    courseData.units.forEach(function(u, ui) {
+      u.sections.forEach(function(s, si) {
+        const text = (s.title + ' ' + s.content.replace(/<[^>]+>/g, ' ')).toLowerCase();
+        if (text.includes(q)) {
+          const rawText = s.content.replace(/<[^>]+>/g, ' ');
+          const idx = text.indexOf(q);
+          const snippet = rawText.substring(Math.max(0, idx - 30), idx + 60);
+          matches.push({ui: ui, si: si, title: s.title, snippet: '...' + snippet + '...'});
+        }
+      });
+    });
+    if (!matches.length) { res.innerHTML = '<div class="search-result"><span style="color:var(--text-tertiary)">No results</span></div>'; }
+    else {
+      res.innerHTML = matches.map(function(m) {
+        return '<div class="search-result" onclick="jumpTo(' + m.ui + ',' + m.si + '); document.getElementById(\'searchResults\').style.display=\'none\'; document.getElementById(\'searchBox\').value=\'\';"><div class="sr-title">' + m.title + '</div><div class="sr-snippet">' + m.snippet + '</div></div>';
+      }).join('');
+    }
+    res.style.display = 'block';
+  });
+  document.addEventListener('click', function(e) {
+    if (!box.contains(e.target) && !res.contains(e.target)) res.style.display = 'none';
+  });
+}
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('open');
+}
+
+renderSidebar();
+renderContent();
+setupSearch();
+</script>
+</body>
+</html>
